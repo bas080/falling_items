@@ -5,6 +5,7 @@
 --HOW TO USE (for modders who want falling nodes capability for there mod)
 --Add to groups groups = { snappy = 3,flammable=2, floored=1 },
 --Add "floored=1" to groups to make node fall when bottom node is dug
+--Add "hanging=1" to make drop when top node is removed
 --Add "attached=1" to groups to make node fall when no node is "touching" the node.
 
 --check for attached item
@@ -23,12 +24,10 @@ minetest.register_on_dignode(function (pos, node, player)
         local ptwo = {x = p.x + dx[ii], y = p.y + dy[ii] , z = p.z + dz[ii]}
         local ntwo = minetest.env:get_node(ptwo)
         if ntwo.name ~= "air" then
-          print("found attached node")
           return
         end
       end
-      minetest.env:remove_node(p)
-      minetest.env:add_item(p, n.name)
+      drop_attached_node(p)
     end
   end
   
@@ -36,21 +35,36 @@ minetest.register_on_dignode(function (pos, node, player)
   local p = {x = pos.x, y = pos.y+1, z = pos.z}
   local n = minetest.env:get_node(p)
   if minetest.get_item_group(n.name, "floored") ~= 0 then
-    minetest.env:remove_node(p)
-    minetest.env:add_item(p, n.name)
+    drop_attached_node(p)
+    minetest.env:dig_node(p)
   end
+  
+  local p = {x = pos.x, y = pos.y-1, z = pos.z}
+  local n = minetest.env:get_node(p)
+  if minetest.get_item_group(n.name, "hanging") ~= 0 then
+    drop_attached_node(p)
+    minetest.env:dig_node(p)
+  end
+  
 end)
 
 
 minetest.register_on_placenode(function(pos, newnode, placer, oldnode, itemstack)
   --check if node has floor else fall
+  if minetest.get_item_group(newnode.name, "hanging") ~= 0 then
+    local p = {x = pos.x, y = pos.y+1, z = pos.z}
+    local n = minetest.env:get_node(p)
+    if n.name == "air" or n.name == "default:water_source" or n.name == "default:water_flowing" then
+      drop_attached_node(pos)
+    end
+  end
+  
   if minetest.get_item_group(newnode.name, "floored") ~= 0 then
-    print("placed floored node")
     local p = {x = pos.x, y = pos.y-1, z = pos.z}
     local n = minetest.env:get_node(p)
     if n.name == "air" or n.name == "default:water_source" or n.name == "default:water_flowing" then
-      minetest.env:remove_node(pos)
-      minetest.env:add_item(pos, newnode.name)
+      drop_attached_node(pos)
     end
   end
 end)
+
