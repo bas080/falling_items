@@ -1,12 +1,4 @@
---FALLING ITEMS MOD (PLUGIN)
---BY:           Bas080
---DESCRIPTION:  Make defined nodes fall when "connected" node is dug
-
---HOW TO USE (for modders who want falling nodes capability for there mod)
---Add to groups groups = { snappy = 3,flammable=2, floored=1 },
---Add "floored=1" to groups to make node fall when bottom node is dug
---Add "hanging=1" to make drop when top node is removed
---Add "attached=1" to groups to make node fall when no node is "touching" the node.
+--for instructions read readme
 
 --check for attached item
 local dx = {0, 0, 0, 0, 1, -1}
@@ -47,7 +39,6 @@ minetest.register_on_dignode(function (pos, node, player)
   end
   
 end)
-
 
 minetest.register_on_placenode(function(pos, newnode, placer, oldnode, itemstack)
   --check if node has floor else fall
