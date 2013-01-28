@@ -8,7 +8,7 @@
 
 BY:             bas080
 DESCRIPTION:    Make defined nodes fall when "connected" node is dug
-VERSION:        1.5
+VERSION:        1.5.5
 LICENCE:        WTFPL
 FORUM:          http://http://forum.minetest.net/viewtopic.php?id=2476
 
@@ -20,7 +20,14 @@ Add to groups groups = { snappy = 3,flammable=2, floored=1 },
 * Add "hanging=1" to make node drop when top node is removed
 * Add "attached=1" to make node fall when no node is "touching" the node.
 
+TODO
+* added group "attached_light" does not reuire attached node to be walkable
+* improved attached group, cannot place attached node to non walkable attaching nodes
+
 Changelog
+
+1.5.5
+* improved attached group, fixed loop that checks for attaching "attached" groups
 
 1.5
 * added group hanging for nodes that require top node to hang on
@@ -31,3 +38,6 @@ Changelog
 
 0.1
 * only defined nodes fall when "attached" node is removed
+
+Licence
+WTFPL

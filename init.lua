@@ -12,14 +12,19 @@ minetest.register_on_dignode(function (pos, node, player)
     local p = {x = pos.x + dx[i], y = pos.y + dy[i] , z = pos.z + dz[i]}
     local n = minetest.env:get_node(p)
     if minetest.get_item_group(n.name, "attached") ~= 0 then
+      print("bam")
+      connected = false
       for ii = 1, 6 do
         local ptwo = {x = p.x + dx[ii], y = p.y + dy[ii] , z = p.z + dz[ii]}
         local ntwo = minetest.env:get_node(ptwo)
         if minetest.registered_nodes[ntwo.name].walkable then
-          return
+          connected = true
         end
       end
-      drop_attached_node(p)
+      if connected == false then
+        drop_attached_node(p)
+        minetest.env:dig_node(p)
+      end
     end
   end
   
