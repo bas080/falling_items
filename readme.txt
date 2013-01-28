@@ -21,7 +21,11 @@ Add to groups groups = { snappy = 3,flammable=2, floored=1 },
 * Add "attached=1" to make node fall when no node is "touching" the node.
 
 TODO
+
+2.0
 * added group "attached_light" does not reuire attached node to be walkable
+
+1.6
 * improved attached group, cannot place attached node to non walkable attaching nodes
 
 Changelog
